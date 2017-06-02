@@ -34,11 +34,7 @@ app.put('/api/evt', function (req, res) {
     var data = req.body;
     if (data.securitycheck == password) {
         console.log('send event to clients')
-        /*io.clients(function(error, clients){
-          if (error) throw error;
-          console.log(clients); // => [6em3d4TJP8Et9EMNAAAA, G5p55dHhGgUnLUctAAAB]
-        });*/
-        io.of('/live').emit('event', JSON.stringify({player: 'player1', action: 'action1'}));
+        io.of('/live').emit('event', JSON.stringify(data.message));
         res.sendStatus(200);
     } else {
         res.sendStatus(401);
@@ -50,7 +46,7 @@ app.post('/api/reset', function (req, res) {
     var data = req.body;
     if (data.securitycheck == password) {
         tour = 0;
-        io.in('/live').emit('big-announcement', JSON.stringify({type: 'reset'}));
+        io.in('/live').emit('event', JSON.stringify({type: 'reset'}));
     } else {
         res.sendStatus(401);
     }
